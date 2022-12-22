@@ -1,16 +1,17 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-$DB_HOST = $_ENV['DB_HOST'];
-$DB_USER = $_ENV['DB_USER'];
-$DB_PASS = $_ENV['DB_PASS'];
-$DB_NAME = $_ENV['DB_NAME'];
+require './functions.php';
+$connection = connectionDb();
 $DB_SCHEMA = $_ENV['DB_SCHEMA'];
-$DB_PORT = $_ENV['DB_PORT'];
+
+if(!$connection) {
+	echo 'Ha ocurrido un error con la conexión a base de datos.';
+	die();
+}
+
+$users = $connection->prepare("SELECT * FROM $DB_SCHEMA.user;");
+$users->execute();
+$users = $users -> fetchAll();
 
 ?>
 
@@ -37,19 +38,20 @@ $DB_PORT = $_ENV['DB_PORT'];
 				<th>PHONE</th>
 				<th>EMAIL</th>
 			</tr>
+			<?php foreach($users as $user): ?>
 			<tr class="table-users__tbody">
-					<td>adsa</td>
-					<td>das</td>
-					<td>dasd</td>
-					<td>dasd</td>
-					<td>dasdasda</td>
+					<td><?php echo $user['id'] ?></td>
+					<td><?php echo $user['name'] ?></td>
+					<td><?php echo $user['lastname'] ?></td>
+					<td><?php echo $user['phone'] ?></td>
+					<td><?php echo $user['email'] ?></td>
 					<td class="table-users__actions">
-						<a class="btn-action --blue" href="./form.php?id=222"><i class="bi bi-pencil-fill"></i></a>
+						<a class="btn-action --blue" href="./form.php?id=<?php echo $user['id'] ?>"><i class="bi bi-pencil-fill"></i></a>
 						<a class="btn-action --red" href="#"><i class="bi bi-trash3-fill"></i></a>
 					</td>
 			</tr>
+			<?php endforeach; ?>
 		</table>
 	</section>
-	<div class="message">Notification</div>
 </body>
 </html>
