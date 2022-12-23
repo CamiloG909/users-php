@@ -25,7 +25,7 @@ if(!isset($_GET['id'])) {
 
 	$user = $connection->prepare("SELECT * FROM $DB_SCHEMA.user WHERE id = '$idUser';");
 	$user->execute();
-	$userObj = $user->fetch();
+	$userObj = $user->fetch(PDO::FETCH_OBJ);
 }
 
 $notification = false;
@@ -69,10 +69,10 @@ if(isset($_POST['add-user']) || isset($_POST['edit-user'])) {
 	<?php require('./components/header.php') ?>
 	<form class="box form" method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
 		<p class="form__title"><?php if($edit) { echo 'Edit'; } else {echo 'Add'; } ?> user <?php if($edit) { echo '<i class="bi bi-pencil-fill"></i>'; } else {echo '<i class="bi bi-person-fill"></i>'; } ?></p>
-		<input class="form__i-text" type="text" name="name" placeholder="Name" <?php if($edit) { echo "value=$userObj[1]"; } ?> >
-		<input class="form__i-text" type="text" name="lastname" placeholder="Last name" <?php if($edit) { echo "value=$userObj[2]"; } ?>>
-		<input class="form__i-text" type="number" name="phone" placeholder="Phone number" <?php if($edit) { echo "value=$userObj[3]"; } ?>>
-		<input class="form__i-text" type="email" name="email" placeholder="Email" <?php if($edit) { echo "value=$userObj[4]"; } ?>>
+		<input class="form__i-text" type="text" name="name" placeholder="Name" <?php if($edit) { echo "value=$userObj->name"; } ?> >
+		<input class="form__i-text" type="text" name="lastname" placeholder="Last name" <?php if($edit) { echo "value=$userObj->lastname"; } ?>>
+		<input class="form__i-text" type="number" name="phone" placeholder="Phone number" <?php if($edit) { echo "value=$userObj->phone"; } ?>>
+		<input class="form__i-text" type="email" name="email" placeholder="Email" <?php if($edit) { echo "value=$userObj->email"; } ?>>
 		<button class="form__btn-add" name="<?php if($edit) { echo 'edit-user'; } else {echo 'add-user'; } ?>" >Save <?php if($edit) { echo '<i class="bi bi-cloud-arrow-up-fill"></i>'; } else {echo '<i class="bi bi-cloud-plus-fill"></i>'; } ?></button>
 	</form>
 	<?php if($notification): ?>
