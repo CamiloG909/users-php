@@ -47,7 +47,7 @@ $users = $users -> fetchAll();
 					<td><?php echo $user['email'] ?></td>
 					<td class="table-users__actions">
 						<a class="btn-action --blue" href="./form.php?id=<?php echo $user['id'] ?>"><i class="bi bi-pencil-fill"></i></a>
-						<a class="btn-action --red" href="#"><i class="bi bi-trash3-fill"></i></a>
+						<a class="btn-action --red" href="./delete.php?id=<?php echo $user['id'] ?>"><i class="bi bi-trash3-fill"></i></a>
 					</td>
 			</tr>
 			<?php endforeach; ?>
